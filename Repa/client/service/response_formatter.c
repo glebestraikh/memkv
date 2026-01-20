@@ -1,6 +1,9 @@
 #include "../service/response_formatter.h"
 #include <stdio.h>
 
+static void response_display_array(const resp_value_t *array);
+static void response_display_error(const char *error_msg);
+
 void response_display(const resp_value_t *response) {
     if (!response) {
         return;
@@ -33,7 +36,7 @@ void response_display(const resp_value_t *response) {
     }
 }
 
-void response_display_array(const resp_value_t *array) {
+static void response_display_array(const resp_value_t *array) {
     if (!array || array->type != RESP_ARRAY) {
         return;
     }
@@ -56,7 +59,7 @@ void response_display_array(const resp_value_t *array) {
     }
 }
 
-void response_display_error(const char *error_msg) {
+static void response_display_error(const char *error_msg) {
     if (!error_msg) {
         printf("(error) Unknown error\n");
         return;

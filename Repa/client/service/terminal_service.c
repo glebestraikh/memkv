@@ -15,14 +15,14 @@
 #endif
 
 
-void terminal_disable_echo(void) {
+static void terminal_disable_echo(void) {
     struct termios tty;
     tcgetattr(STDIN_FILENO, &tty);
     tty.c_lflag &= ~ECHO;
     tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 }
 
-void terminal_enable_echo(void) {
+static void terminal_enable_echo(void) {
     struct termios tty;
     tcgetattr(STDIN_FILENO, &tty);
     tty.c_lflag |= ECHO;
@@ -49,19 +49,6 @@ char* terminal_read_password(const char *prompt) {
     return password;
 }
 
-char* terminal_read_line(const char *prompt) {
-    char *line = readline(prompt);
-
-    if (!line) return NULL;
-
-    if (*line) {
-        char *history_line = terminal_mask_password(line);
-        add_history(history_line);
-        free(history_line);
-    }
-
-    return line;
-}
 
 char* terminal_read_command(const char *prompt) {
     char *line = readline(prompt);
